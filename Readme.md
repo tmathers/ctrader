@@ -5,10 +5,10 @@
 
 ## Installation
 ### Install dependencies
-`pip install binance-connector`
-`pip install python-binance`
-`pip install pandas`
-`pip install sqlalchemy`
+`pip install binance-connector`  
+`pip install python-binance`  
+`pip install pandas`  
+`pip install sqlalchemy`  
 
 ### Configuration
 1. Copy `config-example.py` to `config.py`.
@@ -31,8 +31,8 @@ The trading stategy uses the constants defined in `config.py`, and is as follows
 - Or if the percent lost is more than `MAX_LOSS_PERCENT`, then sell `QUANTITY`
 
 ## References
-Python Connector: https://binance-connector.readthedocs.io/en/stable/
-API Docs: https://binance-docs.github.io/apidocs/spot/en/#general-api-information
+Python Connector: https://binance-connector.readthedocs.io/en/stable/  
+API Docs: https://binance-docs.github.io/apidocs/spot/en/#general-api-information  
 
 
 
