@@ -18,7 +18,7 @@
 5. Configure log level and strategy constants.
 
 ## Running the Client
-To run the clientm enter the following command:
+To run the client enter the following command:
 `python3 ctrader.py -s <SYMBOL> [-t]`
 where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.
 
@@ -31,8 +31,8 @@ The trading stategy uses the constants defined in `config.py`, and is as follows
 - Or if the percent lost is more than `MAX_LOSS_PERCENT`, then sell `QUANTITY`
 
 ## References
-Python Connector: https://binance-connector.readthedocs.io/en/stable/  
-API Docs: https://binance-docs.github.io/apidocs/spot/en/#general-api-information  
+- Python Connector: https://binance-connector.readthedocs.io/en/stable/  
+- API Docs: https://binance-docs.github.io/apidocs/spot/en/#general-api-information  
 
 
 
