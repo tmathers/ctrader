@@ -2,8 +2,12 @@ import logging
 import json
 import sys, getopt, os
 import io
-import config
 import asyncio
+import threading
+import time
+
+import config
+import strategy
 
 import pandas as pd
 import sqlalchemy
@@ -14,7 +18,7 @@ from binance.error import ClientError
 from binance.websocket.spot.websocket_client import SpotWebsocketClient as WebsocketClient
 
 # Setup our configuration
-config_logging(logging, logging.INFO)
+logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=config.LOG_LEVEL, datefmt='%d-%b-%y %H:%M:%S')
 
 
 SQLITE_URL = 'sqlite:///stream.db'
@@ -27,14 +31,14 @@ client = None
 sqlEngine = None
 key = config.API_KEY
 secret = config.API_SECRET
+symbol = ''
 
 
 # Main function
 def main(argv):
 
-    global client, apiEndpoint, key, secret, sqlEngine
+    global client, apiEndpoint, key, secret, sqlEngine, symbol
 
-    symbol = ''
     try:
         opts, args = getopt.getopt(argv,'hts:',['symbol='])
     except getopt.GetoptError:
@@ -56,25 +60,38 @@ def main(argv):
     print('Using API: ' + apiEndpoint)
 
     client = Client(key, secret, base_url = HTTPS_PROTOCOL + apiEndpoint)
-    #printExchangeInfo(symbol=symbol)
-    #trade(symbol)
     
     sqlEngine = sqlalchemy.create_engine(SQLITE_URL)
     wsClient = WebsocketClient(stream_url = WEBSOCKET_PROTOCOL + apiEndpoint)
     wsClient.start()
 
-    wsClient.ticker(
+    wsClient.trade(
         symbol=symbol,
         id=1,
-        callback=createFrame,
+        interval='1s',
+        callback=writePriceInfoToDb,
     )
 
-    #loop = asyncio.get_event_loop()
-    #loop.run_until_complete(socket.__aenter__())
-    #msg = loop.run_until_complete(socket.recv())
+    strategyThread = threading.Thread(target=strategy.runTradingStrategy, args=(symbol, sqlEngine, client, ))
+    strategyThread.start()
 
 
-    #loop.close()
+
+# Write the symbol, price, and timestamp to the SQLite db
+def writePriceInfoToDb(msg):
+
+    global sqlEngine
+    if 'result' in msg and msg['result'] == None:
+        return
+    df = pd.DataFrame([msg])
+    df = df.loc[:,['s','E','p']]
+    df.columns = ['symbol','time','price']
+    df.price = df.price.astype(float)
+    df.time = pd.to_datetime(df.time, unit='ms')
+
+    df.to_sql(symbol, sqlEngine, if_exists='append', index=False)
+    logging.debug('Current %s price: %f', symbol, df.price)
+
 
 
 # Print the current exchange info for the symbol
@@ -83,7 +100,7 @@ def printExchangeInfo(symbol):
     logging.info(json.dumps(client.exchange_info(symbol=symbol), indent=4))
 
 
-# Execute a trade
+# Don't use
 def trade(symbol):
 
     global client
@@ -129,82 +146,6 @@ def trade(symbol):
                 error.status_code, error.error_code, error.error_message
             )
         )
-
-
-
-
-
-def createFrame(msg):
-
-    global sqlEngine
-
-    print(msg)
-
-    if 'result' in msg and msg['result'] == None:
-        return
-    df = pd.DataFrame([msg])
-    df = df.loc[:,['s','E','p']]
-    df.columns = ['symbol','time','price']
-    df.price = df.price.astype(float)
-    df.time = pd.to_datetime(df.time, unit='ms')
-
-    print(df)
-    df.to_sql(str(df.symbol), sqlEngine, if_exists='append', index=False)
-    print(df)
-
-
-
-# STRATEGY Part
-
-import sqlalchemy
-import pandas as pd
-
-def runTradingStrategy():
-
-    get_ipython().run_line_magic('run', './Binance_Keys.ipynb')
-    sqlEngine = sqlalchemy.create_engine(SQLITE_URL)
-    strategy(0.001, 60, 0.001)
-
-
-
-# Trendfollowing
-# if the crypto was rising by x % -> Buy
-# exit when profit is above 0.15% or loss is crossing -0.15%
-# Adapted from https://www.youtube.com/watch?v=rc_Y6rdBqXM
-
-def strategy(entry, lookback, qty, open_position=False):
-    while True:
-        df = pd.read_sql(pair, sqlEngine)
-        lookbackperiod = df.iloc[-lookback:]
-        cumret = (lookbackperiod.price.pct_change() +1).cumprod() - 1
-        if not open_position:
-            if cumret[cumret.last_valid_index()] > entry:
-                order = client.create_order(symbol=pair,
-                                           side='BUY',
-                                           type='MARKET',
-                                           quantity=qty)
-                print(order)
-                open_position = True
-                break
-    if open_position:
-        while True:
-            df = pd.read_sql('BTCUSDT', sqlEngine)
-            sincebuy = df.loc[df.time > 
-                              pd.to_datetime(order['transactTime'],
-                                            unit='ms')]
-            if len(sincebuy) > 1:
-                sincebuyret = (sincebuy.time.pct_change() +1).cumprod() - 1
-                last_entry = sincebuyret[sincebuyret.last_valid_index()]
-                if last_entry > 0.0015 or last_entry < -0.0015:
-                    order = client.create_order(symbol=pair,
-                                           side='SELL',
-                                           type='MARKET',
-                                           quantity=qty)
-                    print(order)
-                    break
-
-
-
 
 
 if __name__ == '__main__':
