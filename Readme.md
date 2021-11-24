@@ -6,7 +6,6 @@
 ## Installation
 ### Install dependencies
 `pip install binance-connector`  
-`pip install python-binance`  
 `pip install pandas`  
 `pip install sqlalchemy`  
 
