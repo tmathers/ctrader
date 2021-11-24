@@ -18,9 +18,9 @@
 5. Configure log level and strategy constants.
 
 ## Running the Client
-To run the client enter the following command:
-`python3 ctrader.py -s <SYMBOL> [-t]`
-where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.
+To run the client enter the following command:  
+`python3 ctrader.py -s <SYMBOL> [-t]`  
+where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.  
 
 ## Strategy
 The trading stategy uses the constants defined in `config.py`, and is as follows:
