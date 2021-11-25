@@ -25,7 +25,7 @@ SQLITE_URL = 'sqlite:///stream.db'
 HTTPS_PROTOCOL = 'https://'
 WEBSOCKET_PROTOCOL = 'wss://'
 TEST_API_ENDPOINT = 'testnet.binance.vision'
-API_ENDPOINT = ''
+API_ENDPOINT = 'api.binance.com'
 apiEndpoint = API_ENDPOINT
 client = None
 sqlEngine = None
@@ -68,7 +68,7 @@ def main(argv):
     wsClient.trade(
         symbol=symbol,
         id=1,
-        interval='1s',
+        interval='1s',  # ignored ?
         callback=writePriceInfoToDb,
     )
 
