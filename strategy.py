@@ -14,6 +14,8 @@ from colorama import Fore, Back, Style
 sqlEngine = None
 client = None
 
+totalEarnings = 0
+
 
 def runTradingStrategy(symbol, _sqlEngine, _client):
     global sqlEngine, client
@@ -33,13 +35,19 @@ def runTradingStrategy(symbol, _sqlEngine, _client):
 
 def strategy(entry, lookback, qty, symbol, open_position=False):
 
+    global totalEarnings
 
     # BUY
     while True:
 
         time.sleep(1)
 
-        df = pd.read_sql('SELECT time, price FROM ' + symbol, sqlEngine)
+        try:
+            df = pd.read_sql('SELECT time, price FROM ' + symbol, sqlEngine)
+        except sqlalchemy.exc.OperationalError as e:
+            logging.warning('Caught exception' + format(e))
+            return
+        
         lookbackperiod = df.iloc[-lookback:]
 
         # Calculate cumulative return
@@ -61,7 +69,7 @@ def strategy(entry, lookback, qty, symbol, open_position=False):
 
                 order = client.new_order(**params)
 
-                logging.info(Fore.GREEN + 'BOUGHT %f %s, return over window was %f%%', qty, symbol, cumReturn * 100.0)
+                logging.info(Fore.GREEN + 'BOUGHT %f %s, trend over last %ds was +%f%%', qty, symbol, config.WINDOW, cumReturn * 100.0)
                 print(Style.RESET_ALL)
 
                 logging.info(order)
@@ -101,10 +109,17 @@ def strategy(entry, lookback, qty, symbol, open_position=False):
 
                     order = client.new_order(**params)
 
+                    totalEarnings += returnSinceBuy
+
+                    # print summary
+
                     gainOrLoss = 'GAIN' if returnSinceBuy > 0  else 'LOSS'
                     color = Fore.GREEN if returnSinceBuy > 0  else Fore.RED
+                    totalEarningsColor = Fore.GREEN if totalEarnings > 0  else Fore.RED
 
                     logging.info(color + 'SOLD %f %s for %f%% %s' , qty, symbol, returnSinceBuy * 100.0, gainOrLoss)
+                    logging.info(totalEarningsColor + 'TOTAl EARNINGS: %f %s', totalEarnings, symbol)
+                   
                     print(Style.RESET_ALL)
                     
                     logging.info(order)
