@@ -11,9 +11,9 @@
 
 ### Configuration
 1. Copy `config-example.py` to `config.py`.
-2. Generate the API keys: https://www.binance.com/en-NG/support/faq/360002502072 .
+2. Generate the API keys: https://www.binance.com/en-NG/support/faq/360002502072.
 3. Copy the key and secret key info `config.py`.
-4. If you plan on running on the test net, you must create API keys for the test net and copy them into `config.py`.
+4. If you plan on running on the test net, you must create API keys for the test net and copy them into `config.py`: https://dev.binance.vision/t/binance-testnet-environments/99.
 5. Configure log level and strategy constants.
 
 ## Running the Client
