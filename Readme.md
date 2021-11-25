@@ -20,6 +20,9 @@
 To run the client enter the following command:  
 ``python3 ctrader.py -s <SYMBOL> [-t]``  
 where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.  
+  
+## Stopping the Client
+To stop the client press `CTRL` + `C` or close the terminal window.
 
 ## Strategy
 The trading stategy uses the constants defined in `config.py`, and is as follows:
@@ -33,10 +36,10 @@ The trading stategy uses the constants defined in `config.py`, and is as follows
 - The script writes to a file called `stream.db` which keeps track of the price data. At present, it does not get cleaned out, so if you keep running the script it will eventually consume all your disk space. So just delete the file every so often if you are running the script for a while.
 - The script will only sell after it buys, and it will only sell the same amount of coin as it buys, as defined by `QUANTITY` in `config.py`. 
 - The script doesn't keep track of buys and sells between runs - this is a future development
-- The script doesn't yet keep track of cumulative gains or losses, or check that you have enough coin in your wallet before buying.
+- The script does not check that you have enough coin in your wallet before buying - it will fail in this case.
   
 ## Word of Warning
-This strategy works better when the coin you are trading is trending up, otherwise you will probably just lose money. It is reccommended that you start on the test net (pass the `-t` option) until you get used to the strategy.
+This strategy works better when the coin you are trading is trending up, otherwise you will probably just lose money. It is reccommended that you start on the test net (pass the `-t` option) until you get used to the strategy and adjust the constants appropriately. You should probably not let this run unsupervised because it will keep trading until it is killed or you run out of money.
 
 ## References
 - Python Connector: https://binance-connector.readthedocs.io/en/stable/  
