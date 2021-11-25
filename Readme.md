@@ -34,6 +34,9 @@ The trading stategy uses the constants defined in `config.py`, and is as follows
 - The script will only sell after it buys, and it will only sell the same amount of coin as it buys, as defined by `QUANTITY` in `config.py`. 
 - The script doesn't keep track of buys and sells between runs - this is a future development
 - The script doesn't yet keep track of cumulative gains or losses, or check that you have enough coin in your wallet before buying.
+  
+## Word of Warning
+This strategy works better when the coin you are trading is trending up, otherwise you will probably just lose money. It is reccommended that you start on the test net (pass the `-t` option) until you get used to the strategy.
 
 ## References
 - Python Connector: https://binance-connector.readthedocs.io/en/stable/  
