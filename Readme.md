@@ -31,7 +31,7 @@ The trading stategy uses the constants defined in `config.py`, and is as follows
   
 ## Limitations
 - The script writes to a file called `stream.db` which keeps track of the price data. At present, it does not get cleaned out, so if you keep running the script it will eventually consume all your disk space. So just delete the file every so often if you are running the script for a while.
-- The script will only sell after it buys, and it will only sell the same amount of coin as it buys, as defined in `config.py`. 
+- The script will only sell after it buys, and it will only sell the same amount of coin as it buys, as defined by `QUANTITY` in `config.py`. 
 - The script doesn't keep track of buys and sells between runs - this is a future development
 - The script doesn't yet keep track of cumulative gains or losses, or check that you have enough coin in your wallet before buying.
 
