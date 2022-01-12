@@ -2,6 +2,10 @@
 
 ## Prerequisites
 - Python 3 (https://wiki.python.org/moin/BeginnersGuide/Download)
+- Pip (https://pip.pypa.io/en/stable/installation/)
+
+### Windows Users
+- Add python scripts directory (ie. %USERPROFILE%\AppData\Local\Programs\Python\Python310\Scripts) to PATH: https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
 
 ## Installation
 ### Install dependencies
