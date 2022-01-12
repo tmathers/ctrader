@@ -11,7 +11,7 @@
 ### Install dependencies
 `pip install binance-connector`  
 `pip install pandas`  
-`pip install sqlalchemy`
+`pip install sqlalchemy` 
 `pip install colorama`
 
 ### Configuration
@@ -28,9 +28,9 @@ where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on th
   
 ### Windows users
   
-First run (see issue here: https://dev.binance.vision/t/cant-run-any-websocket-example-on-binance-connector-python-on-windows/4957)
-`pip install certifi`
-`for /f %i in ('py -m certifi') do set SSL_CERT_FILE=%i`
+First run (see issue here: https://dev.binance.vision/t/cant-run-any-websocket-example-on-binance-connector-python-on-windows/4957)  
+`pip install certifi`  
+`for /f %i in ('py -m certifi') do set SSL_CERT_FILE=%i`  
 Then:
 ``py ctrader.py -s <SYMBOL> [-t]``  
   
