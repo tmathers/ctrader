@@ -11,7 +11,8 @@
 ### Install dependencies
 `pip install binance-connector`  
 `pip install pandas`  
-`pip install sqlalchemy`  
+`pip install sqlalchemy`
+`pip install colorama`
 
 ### Configuration
 1. Copy `config-example.py` to `config.py`.
@@ -24,6 +25,14 @@
 To run the client enter the following command:  
 ``python3 ctrader.py -s <SYMBOL> [-t]``  
 where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.  
+  
+### Windows users
+  
+First run (see issue here: https://dev.binance.vision/t/cant-run-any-websocket-example-on-binance-connector-python-on-windows/4957)
+`pip install certifi`
+`for /f %i in ('py -m certifi') do set SSL_CERT_FILE=%i`
+Then:
+``py ctrader.py -s <SYMBOL> [-t]``  
   
 ## Stopping the Client
 To stop the client press `CTRL` + `C` or close the terminal window.
