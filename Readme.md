@@ -24,7 +24,7 @@
 ## Running the Client
 To run the client enter the following command:  
 ``python3 ctrader.py -s <SYMBOL> [-t]``  
-where <SYMBOL> is the trading pair symbol (ex. BTCUSTD) and `-t` is to run on the test net.  
+where <SYMBOL> is the trading pair symbol (ex. `BTCUSDT`) and `-t` is to run on the test net.  
   
 ### Windows users
   
