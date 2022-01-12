@@ -5,7 +5,7 @@
 - Pip (https://pip.pypa.io/en/stable/installation/)
 
 ### Windows Users
-- Add python scripts directory (ie. %USERPROFILE%\AppData\Local\Programs\Python\Python310\Scripts) to PATH: https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
+- Add python scripts directory (ie. `%USERPROFILE%\AppData\Local\Programs\Python\Python310\Scripts` depending on setup) to PATH: https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
 
 ## Installation
 ### Install dependencies
