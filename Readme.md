@@ -1,4 +1,4 @@
-# CTrader
+# cTrader
 
 ## Prerequisites
 - Python 3 (https://wiki.python.org/moin/BeginnersGuide/Download)
